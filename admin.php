@@ -38,23 +38,25 @@ $students = $pdo->query("SELECT * FROM students")->fetchAll(PDO::FETCH_ASSOC);
             <table class="min-w-full divide-y divide-gray-200">
                 <thead class="bg-gray-100">
                     <tr>
-                        <th class="px-6 py-3 text-left text-sm font-semibold text-gray-600">ID</th>
+                        <th class="px-6 py-3 text-left text-sm font-semibold text-gray-600">Matric No.</th>
                         <th class="px-6 py-3 text-left text-sm font-semibold text-gray-600">Name</th>
+                        <th class="px-6 py-3 text-left text-sm font-semibold text-gray-600">Department</th>
+                        <th class="px-6 py-3 text-left text-sm font-semibold text-gray-600">Level</th>
                         <th class="px-6 py-3 text-left text-sm font-semibold text-gray-600">Email</th>
-                        <th class="px-6 py-3 text-left text-sm font-semibold text-gray-600">Class</th>
                         <th class="px-6 py-3 text-left text-sm font-semibold text-gray-600">Actions</th>
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
                     <?php foreach ($students as $student): ?>
                         <tr>
-                            <td class="px-6 py-4"><?= htmlspecialchars($student['id']) ?></td>
+                            <td class="px-6 py-4"><?= htmlspecialchars($student['student_id']) ?></td>
                             <td class="px-6 py-4"><?= htmlspecialchars($student['name']) ?></td>
+                            <td class="px-6 py-4"><?= htmlspecialchars($student['department']) ?></td>
+                            <td class="px-6 py-4"><?= htmlspecialchars($student['level']) ?></td>
                             <td class="px-6 py-4"><?= htmlspecialchars($student['email']) ?></td>
-                            <td class="px-6 py-4"><?= htmlspecialchars($student['class']) ?></td>
                             <td class="px-6 py-4">
-                                <a href="edit_student.php?id=<?= $student['id'] ?>" class="text-blue-600 hover:underline">Edit</a> |
-                                <a href="delete_student.php?id=<?= $student['id'] ?>" class="text-red-600 hover:underline">Delete</a>
+                                <a href="edit_student.php?id=<?= $student['student_id'] ?>" class="text-blue-600 hover:underline">Edit</a> |
+                                <a href="delete_student.php?id=<?= $student['student_id'] ?>" class="text-red-600 hover:underline">Delete</a>
                             </td>
                         </tr>
                     <?php endforeach; ?>

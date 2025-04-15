@@ -1,21 +1,16 @@
 <?php
 require 'db.php';
 
-CREATE TABLE students (
-    student_id VARCHAR(255) PRIMARY KEY,
-    name VARCHAR(100) NOT NULL,
-    department VARCHAR(255) NOT NULL,
-    level VARCHAR(50) NOT NULL,
-    email VARCHAR(100) UNIQUE NOT NULL,
-    password VARCHAR(255)
-);
-
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $student_id = $_POST['student_id'];
     $name = $_POST['name'];
+    $department = $_POST['department']
+    $level = $_POST['level'];
     $email = $_POST['email'];
-    $class = $_POST['class'];
-    $credential_id = $_POST['credential_id'];
-    $public_key = $_POST['public_key'];
+    $password = $_POST['password']
+
+    // $credential_id = $_POST['credential_id'];
+    // $public_key = $_POST['public_key'];
 
     $stmt = $pdo->prepare("INSERT INTO students (name, email, class, credential_id, public_key) VALUES (?, ?, ?, ?, ?)");
     $stmt->execute([$name, $email, $class, $credential_id, $public_key]);
