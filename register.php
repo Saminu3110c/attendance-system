@@ -1,6 +1,15 @@
 <?php
 require 'db.php';
 
+CREATE TABLE students (
+    student_id VARCHAR(255) PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    department VARCHAR(255) NOT NULL,
+    level VARCHAR(50) NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    password VARCHAR(255)
+);
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $name = $_POST['name'];
     $email = $_POST['email'];
@@ -35,13 +44,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <input type="text" id="name" name="name" required placeholder="Enter your full name" 
                     class="w-full p-4 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-400 focus:outline-none">
             </div>
+            <!-- Student Class --> 
+            <div class="mb-6">
+                <label for="class" class="block text-lg font-semibold mb-2">Class</label>
+                <input type="text" id="class" name="class" required placeholder="Enter your class"
+                    class="w-full p-4 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-400 focus:outline-none">
+            </div>
 
-            <!-- Student ID -->
+            <!-- Student ID
             <div class="mb-6">
                 <label for="student_id" class="block text-lg font-semibold mb-2">Student ID</label>
                 <input type="text" id="student_id" name="student_id" required placeholder="Enter your student ID"
                     class="w-full p-4 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-400 focus:outline-none">
-            </div>
+            </div> -->
 
             <!-- Email -->
             <div class="mb-6">

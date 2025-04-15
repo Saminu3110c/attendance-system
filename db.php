@@ -1,5 +1,4 @@
 <?php
-// db.php: Database connection script
 
 $host = "localhost";
 $user = "root";
