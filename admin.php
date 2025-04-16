@@ -55,8 +55,8 @@ $students = $pdo->query("SELECT * FROM students")->fetchAll(PDO::FETCH_ASSOC);
                             <td class="px-6 py-4"><?= htmlspecialchars($student['level']) ?></td>
                             <td class="px-6 py-4"><?= htmlspecialchars($student['email']) ?></td>
                             <td class="px-6 py-4">
-                                <a href="edit_student.php?id=<?= $student['student_id'] ?>" class="text-blue-600 hover:underline">Edit</a> |
-                                <a href="delete_student.php?id=<?= $student['student_id'] ?>" class="text-red-600 hover:underline">Delete</a>
+                                <a href="edit_student.php?edit_id=<?= $student['student_id'] ?>" class="text-blue-600 hover:underline">Edit</a> |
+                                <a href="delete_student.php?delete_id=<?= $student['student_id'] ?>" class="text-red-600 hover:underline">Delete</a>
                             </td>
                         </tr>
                     <?php endforeach; ?>

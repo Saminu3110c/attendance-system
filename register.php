@@ -71,7 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <!-- Password --> 
             <div class="mb-6">
                 <label for="password" class="block text-lg font-semibold mb-2">Password</label>
-                <input type="text" id="password" name="password" required placeholder="Enter your password"
+                <input type="password" id="password" name="password" required placeholder="Enter your password"
                     class="w-full p-4 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-400 focus:outline-none">
             </div>
 
