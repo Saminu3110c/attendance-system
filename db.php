@@ -1,14 +1,12 @@
 <?php
 
-$host = "localhost";
-$user = "root";
-$password = "";
-$dbname = "attendance_system_test";
+    $host = "localhost";
+    $username = "root";
+    $password = "";
+    $dbname = "attendance_system_test";
 
-try {
-    $pdo = new PDO("mysql:host=$host;dbname=$dbname", $user, $password);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch (PDOException $e) {
-    die("Database connection failed: " . $e->getMessage());
-}
+    $conn = mysqli_connect($host, $username, $password, $dbname);
+    if (!$conn) {
+        die("Connection failed: " . mysqli_connect_error());
+    }
 ?> 

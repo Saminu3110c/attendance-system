@@ -1,18 +1,11 @@
-<?php 
-    include 'db.php';
-    if(isset($_GET['delete_id'])){
-        $id = $_GET['delete_id'];
+<?php
+    require 'db.php';
+    $id = $_GET['delete_id'];
+    $sql = "DELETE FROM students WHERE student_id = '$id'";
 
-        $stmt = $pdo->prepare("delete from `students` where student_id = :id");
-
-        $stmt->execute(['id' => $id]);
-        echo "Student deleted successfully!";
-
-    }
-
+    if (mysqli_query($conn, $sql)) {
+        // echo "Student deleted successfully!";
+        header('location:admin.php');
+    } 
+    // mysqli_close($conn);
 ?>
-
-
-<!-- $sql = "DELETE FROM users WHERE id = :id";
-$stmt = $pdo->prepare($sql);
-$stmt->execute(['id' => $id]); -->
