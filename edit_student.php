@@ -1,6 +1,18 @@
 
 <?php
     require 'db.php';
+    session_start();
+    if (!isset($_SESSION['user']) || $_SESSION['user']['role'] !== 'admin' || !isset($_GET['edit_id'])) {
+        header("Location: admin.php");
+        exit;
+    }
+
+
+    // if (!isset($_GET['edit_id'])) {
+    //     $_SESSION['error'] = "No student ID provided.";
+    //     header("Location: admin.php");
+    //     exit;
+    // }
     $id = $_GET['edit_id'];
 
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -56,6 +68,7 @@
             <input type="email" name="email" value="<?= htmlspecialchars($student['email']) ?>" required class="w-full border p-2 rounded">
         </label>
         <button type="submit" class="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700">Update Student</button>
+        <p class="text-center mt-6 text-gray-600">Changed your mind? <a href="admin.php" class="text-blue-500 hover:underline">Cancel</a></p>
     </form>
 </body>
 </html>

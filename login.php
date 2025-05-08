@@ -14,11 +14,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if ($user && password_verify($password, $user['password'])) {
         $_SESSION['user'] = $user;
-        $_SESSION['success'] = "Welcome back, {$user['username']}!";
+        $_SESSION['success'] = "<h2 align = 'center'>Welcome back, {$user['username']}!</h2>";
         header("Location: admin.php");
         exit;
     } else {
-        $_SESSION['error'] = "Invalid username or password!";
+        $_SESSION['error'] = "<h2 align = 'center'>Invalid username or password!</h2>";
         header("Location: login.php");
         exit;
     }
@@ -27,23 +27,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <title>Admin Login</title>
-    <style>
-        body { font-family: Arial; background: #f0f0f0; display: flex; justify-content: center; align-items: center; height: 100vh; }
-        .login-box { background: white; padding: 30px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); width: 350px; }
-        .login-box h2 { text-align: center; }
-        .login-box input { width: 100%; padding: 10px; margin: 10px 0}
-        .login-box button { width: 100%; padding: 10px; background: #007bff; border: none; color: white; }
-        .alert { padding: 10px; margin-bottom: 10px; border-radius: 5px; }
-        .success { background: #d4edda; color: #155724; }
-        .error { background: #f8d7da; color: #721c24; }
-    </style>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-    <div class="login-box">
-        <h2>Admin Login</h2>
 
+<body class="bg-gray-100 flex justify-center items-center h-screen">
+    <div class="bg-white shadow-xl rounded-lg p-8 max-w-lg w-full">
+        <h2 class="text-3xl font-bold text-center mb-6">Admin Login</h2>
         <?php
         if (isset($_SESSION['success'])) {
             echo "<div class='alert success'>{$_SESSION['success']}</div>";
@@ -55,11 +47,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
         ?>
 
-        <form method="POST">
-            <input type="text" name="username" placeholder="Username" required>
-            <input type="password" name="password" placeholder="Password" required>
-            <button type="submit">Login</button>
+        <form id="loginForm" method="POST">
+            <div class="mb-6">
+                <label for="username" class="block text-lg font-semibold mb-2">Username</label>
+                <input type="text" id="username" name="username" required placeholder="Enter your Username"
+                    class="w-full p-4 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-400 focus:outline-none">
+            </div>
+            <div class="mb-6">
+                <label for="password" class="block text-lg font-semibold mb-2">Password</label>
+                <input type="password" id="password" name="password" required placeholder="Enter your password"
+                    class="w-full p-4 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-400 focus:outline-none">
+            </div>
+            <button type="submit" id="submitBtn" class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-6 rounded-lg w-full">
+                Login
+            </button>
         </form>
+        
     </div>
 </body>
+
 </html>
