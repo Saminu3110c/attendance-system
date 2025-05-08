@@ -1,23 +1,31 @@
 <?php
-require 'db.php';
+    session_start();
+    require 'db.php';
+    require 'flash.php';
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $student_id = $_POST['student_id'];
-    $name = $_POST['name'];
-    $department = $_POST['department'];
-    $level = $_POST['level'];
-    $email = $_POST['email'];
-    $password = $_POST['password'];
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        $student_id = $_POST['student_id'];
+        $name = $_POST['name'];
+        $department = $_POST['department'];
+        $level = $_POST['level'];
+        $email = $_POST['email'];
+        $password = $_POST['password'];
 
 
-    $stmt = mysqli_prepare($conn, "INSERT INTO students (student_id, name, department, level, email, password) VALUES (?, ?, ?, ?, ?, ?)");
-    mysqli_stmt_bind_param($stmt, "ssssss", $student_id, $name, $department, $level, $email, $password);
-    mysqli_stmt_execute($stmt);
-    // echo "Student registered successfully!";
-    header('location:admin.php');
-    // mysqli_close($conn);
-    
-}
+        $stmt = mysqli_prepare($conn, "INSERT INTO students (student_id, name, department, level, email, password) VALUES (?, ?, ?, ?, ?, ?)");
+        mysqli_stmt_bind_param($stmt, "ssssss", $student_id, $name, $department, $level, $email, $password);
+        // mysqli_stmt_execute($stmt);
+        if (mysqli_stmt_execute($stmt)) {
+            $_SESSION['success'] = "Student registered successfully!";
+        } else {
+            $_SESSION['error'] = "Registration failed: " . mysqli_error($conn);
+        }
+        // echo "Student registered successfully!";
+        // header('location:admin.php');
+        // mysqli_close($conn);
+        
+        
+    }
 ?>
 
 <!DOCTYPE html>
@@ -30,6 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <body class="bg-gray-100 flex items-center justify-center min-h-screen">
     <form id="registerForm" method="POST" class="bg-white p-8 rounded shadow-md w-full max-w-md">
         <h2 class="text-2xl font-bold mb-6 text-center text-blue-700">Student Registration</h2>
+        <?php // flash('success'); flash('error'); ?>
         <label class="block mb-4">Matric No.:
             <input type="text" name="student_id" required class="w-full border p-2 rounded">
         </label>
@@ -46,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <input type="email" name="email" required class="w-full border p-2 rounded">
         </label>
         <label class="block mb-4">Password:
-            <input type="text" name="password" required class="w-full border p-2 rounded">
+            <input type="password" name="password" required class="w-full border p-2 rounded">
         </label>
         <!-- <input type="hidden" name="credential_id" id="credential_id">
         <input type="hidden" name="public_key" id="public_key"> -->

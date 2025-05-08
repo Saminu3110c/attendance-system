@@ -1,5 +1,13 @@
 <?php
+
+?>
+<?php
     require 'db.php';
+    session_start();
+    if (!isset($_SESSION['user']) || $_SESSION['user']['role'] !== 'admin') {
+        header("Location: login.php");
+        exit;
+    }
 
     $sql = "SELECT * FROM students";
     $result = mysqli_query($conn, $sql);
