@@ -22,11 +22,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Use this if password is stored as plaintext (not recommended)
         if ($password_input === $student['password']) {
 
-            $student_real_id = $student['id'];
+            $student_real_id = $student['student_id'];
 
             $insert_sql = "INSERT INTO attendance (student_id, attendance_date) VALUES (?, CURDATE())";
             $insert_stmt = mysqli_prepare($conn, $insert_sql);
-            mysqli_stmt_bind_param($insert_stmt, "i", $student_real_id);
+            mysqli_stmt_bind_param($insert_stmt, "s", $student_real_id);
 
             if (mysqli_stmt_execute($insert_stmt)) {
                 echo "✅ Attendance marked successfully!";
