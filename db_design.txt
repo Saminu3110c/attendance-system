@@ -1,25 +1,76 @@
+-- 1. Drop tables if they already exist (for development resets)
+DROP TABLE IF EXISTS attendance;
+DROP TABLE IF EXISTS course_activations;
+DROP TABLE IF EXISTS course_assignments;
+DROP TABLE IF EXISTS courses;
+DROP TABLE IF EXISTS teachers;
+DROP TABLE IF EXISTS students;
+DROP TABLE IF EXISTS users;
+
+-- 2. Students table
 CREATE TABLE students (
-    student_id VARCHAR(255) PRIMARY KEY,
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    student_id VARCHAR(50) UNIQUE NOT NULL,
     name VARCHAR(100) NOT NULL,
     department VARCHAR(255) NOT NULL,
     level VARCHAR(50) NOT NULL,
-    email VARCHAR(100) UNIQUE NOT NULL,
-    password VARCHAR(255)
+    email VARCHAR(100) UNIQUE,
+    password VARCHAR(255) NOT NULL
 );
 
 
+-- 3. Teachers table
+CREATE TABLE teachers (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    teacher_id VARCHAR(50) UNIQUE NOT NULL,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) UNIQUE,
+    password VARCHAR(255) NOT NULL
+);
+
+-- 4. Courses table
+CREATE TABLE courses (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    course_code VARCHAR(50) UNIQUE NOT NULL,
+    title VARCHAR(100) NOT NULL
+);
+
+-- 5. Course Assignments (assigning a course to a teacher)
+CREATE TABLE course_assignments (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    course_id INT NOT NULL,
+    teacher_id INT NOT NULL,
+    FOREIGN KEY (course_id) REFERENCES courses(id) ON DELETE CASCADE,
+    FOREIGN KEY (teacher_id) REFERENCES teachers(id) ON DELETE CASCADE
+);
+
+-- 6. Course Activations (active course windows)
+CREATE TABLE course_activations (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    course_id INT NOT NULL,
+    teacher_id INT NOT NULL,
+    start_time DATETIME NOT NULL,
+    end_time DATETIME NOT NULL,
+    FOREIGN KEY (course_id) REFERENCES courses(id) ON DELETE CASCADE,
+    FOREIGN KEY (teacher_id) REFERENCES teachers(id) ON DELETE CASCADE
+);
+
+-- 7. Attendance table (linked to students and active course sessions)
 CREATE TABLE attendance (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    student_id VARCHAR(255) NOT NULL,
-    attendance_date DATE NOT NULL,
-    status ENUM('present', 'absent') DEFAULT 'present',
-    FOREIGN KEY (student_id) REFERENCES students(student_id)
+    student_id INT NOT NULL,
+    course_id INT NOT NULL,
+    attendance_date DATE NOT NULL DEFAULT (CURRENT_DATE),
+    attendance_time DATETIME DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE(student_id, course_id, attendance_date), -- enforces 1 attendance per day
+    FOREIGN KEY (student_id) REFERENCES students(id) ON DELETE CASCADE,
+    FOREIGN KEY (course_id) REFERENCES courses(id) ON DELETE CASCADE
 );
 
-
+-- 8. Users table (for admin authentication)
 CREATE TABLE users (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    username VARCHAR(100) NOT NULL,
+    username VARCHAR(50) UNIQUE NOT NULL,
     password VARCHAR(255) NOT NULL,
-    role ENUM('admin', 'user') DEFAULT 'user'
+    role ENUM('admin', 'teacher') DEFAULT 'admin'
 );

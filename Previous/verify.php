@@ -30,8 +30,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             if (mysqli_stmt_execute($insert_stmt)) {
                 echo "✅ Attendance marked successfully!";
+                // header('location:index.php');
             } else {
                 echo "❌ Failed to mark attendance.";
+                // header('location:index.php');
             }
 
         } else {
