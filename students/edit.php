@@ -34,17 +34,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $department = trim($_POST['department'] ?? '');
     $level = trim($_POST['level'] ?? '');
     $email = trim($_POST['email'] ?? '');
-    $password = trim($_POST['password'] ?? '');
+    // $password = trim($_POST['password'] ?? '');
 
     // Validate inputs
-    if (empty($student_id) || empty($name) || empty($department) ||empty($level) ||empty($email) || empty($password)) {
+    if (empty($student_id) || empty($name) || empty($department) ||empty($level) ||empty($email)) {
         $errors[] = "All fields are required.";
     }
 
 
     if (empty($errors)) {
-        $stmt = mysqli_prepare($conn, "UPDATE students SET student_id = ?, name = ?, department = ?, level = ?, email = ?, password = ? WHERE id = ?");
-        mysqli_stmt_bind_param($stmt, "ssssssi", $student_id, $name, $department, $level, $email, $password, $id);
+        $stmt = mysqli_prepare($conn, "UPDATE students SET student_id = ?, name = ?, department = ?, level = ?, email = ?, WHERE id = ?");
+        mysqli_stmt_bind_param($stmt, "sssssi", $student_id, $name, $department, $level, $email, $id);
         if (mysqli_stmt_execute($stmt)) {
             header("Location: index.php?updated=1");
             exit;
@@ -93,10 +93,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="mb-3">
             <label>Email</label>
             <input type="email" name="class" class="form-control" value="<?= htmlspecialchars($student['email']) ?>" required>
-        </div>
-        <div class="mb-3">
-            <label>Password</label>
-            <input type="password" name="password" class="form-control" value="<?= htmlspecialchars($student['password']) ?>" required>
         </div>
         <button type="submit" class="btn btn-primary">🔄 Update</button>
     </form>

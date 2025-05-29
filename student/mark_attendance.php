@@ -1,6 +1,5 @@
 <?php
 session_start();
-require '../includes/db.php';
 
 // Ensure student is logged in
 if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'student') {
@@ -8,50 +7,48 @@ if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'student') {
     exit;
 }
 
+require '../includes/db.php';
+
 $student_id = $_SESSION['user_id'];
-$success = $error = "";
+$success = $error = '';
 
-// Current time
+// Get active courses (joined with course title)
 $now = date('Y-m-d H:i:s');
-$today = date('Y-m-d');
+$query = "
+    SELECT ac.id AS activation_id, c.id AS course_id, c.title, ac.start_time, ac.end_time
+    FROM course_activations ac
+    JOIN courses c ON ac.course_id = c.id
+    WHERE ac.start_time <= '$now' AND ac.end_time >= '$now'
+";
 
-// Handle form submission
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $course_id = $_POST['course_id'] ?? '';
+$result = mysqli_query($conn, $query);
+$active_courses = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
-    if ($course_id) {
-        // Ensure course is currently active
-        $checkActive = mysqli_query($conn, "SELECT * FROM active_courses 
-                                            WHERE course_id = $course_id 
-                                            AND start_time <= '$now' AND end_time >= '$now' 
-                                            LIMIT 1");
+// Handle attendance marking
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['course_id'])) {
+    $course_id = (int)$_POST['course_id'];
+    $today = date('Y-m-d');
 
-        if (mysqli_num_rows($checkActive) === 1) {
-            
-            $stmt = mysqli_prepare($conn, "INSERT INTO attendance (student_id, course_id, attendance_date) VALUES (?, ?, ?)");
-            mysqli_stmt_bind_param($stmt, "iis", $student_id, $course_id, $today);
-
-            if (mysqli_stmt_execute($stmt)) {
-                $success = "✅ Attendance marked successfully!";
-            } else {
-                $error = "⚠️ You’ve already marked attendance for this course today.";
-            }
-        } else {
-            $error = "⚠️ Course is not active for attendance.";
-        }
+    // Prevent multiple attendance entries per day
+    $check = mysqli_query($conn, "
+        SELECT id FROM attendance 
+        WHERE student_id = $student_id AND course_id = $course_id AND attendance_date = '$today'
+    ");
+    
+    if (mysqli_num_rows($check) > 0) {
+        $error = "⚠️ You already marked attendance for this course today.";
     } else {
-        $error = "⚠️ Please select a course.";
+        $stmt = mysqli_prepare($conn, "
+            INSERT INTO attendance (student_id, course_id) 
+            VALUES (?, ?)
+        ");
+        mysqli_stmt_bind_param($stmt, 'ii', $student_id, $course_id);
+        if (mysqli_stmt_execute($stmt)) {
+            $success = "✅ Attendance marked successfully!";
+        } else {
+            $error = "❌ Failed to mark attendance.";
+        }
     }
-}
-
-// Get currently active courses
-$active_courses = [];
-$result = mysqli_query($conn, "SELECT ca.course_id, c.course_code, c.title, ca.start_time, ca.end_time 
-                               FROM course_activations ca 
-                               JOIN courses c ON ca.course_id = c.id 
-                               WHERE ca.start_time <= '$now' AND ca.end_time >= '$now'");
-while ($row = mysqli_fetch_assoc($result)) {
-    $active_courses[] = $row;
 }
 ?>
 
@@ -63,8 +60,8 @@ while ($row = mysqli_fetch_assoc($result)) {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body class="bg-light">
-<div class="container mt-5">
-    <h2 class="mb-4">🎯 Mark Attendance</h2>
+<div class="container mt-4">
+    <h2 class="mb-4">📝 Mark Attendance</h2>
     <a href="index.php" class="btn btn-secondary btn-sm mb-3">← Back to Dashboard</a>
 
     <?php if ($success): ?>
@@ -73,24 +70,25 @@ while ($row = mysqli_fetch_assoc($result)) {
         <div class="alert alert-danger"><?= $error ?></div>
     <?php endif; ?>
 
-    <?php if (empty($active_courses)): ?>
-        <div class="alert alert-warning">📌 No active courses available right now.</div>
-    <?php else: ?>
+    <?php if (count($active_courses) > 0): ?>
         <form method="POST">
             <div class="mb-3">
-                <label class="form-label">Select Active Course</label>
+                <label for="course_id" class="form-label">Select Active Course</label>
                 <select name="course_id" class="form-select" required>
-                    <option value="">-- Choose a course --</option>
+                    <option value="" disabled selected>-- Choose a course --</option>
                     <?php foreach ($active_courses as $course): ?>
                         <option value="<?= $course['course_id'] ?>">
-                            <?= htmlspecialchars($course['course_code']) ?> - <?= htmlspecialchars($course['title']) ?>
-                            (<?= date('H:i', strtotime($course['start_time'])) ?> to <?= date('H:i', strtotime($course['end_time'])) ?>)
+                            <?= htmlspecialchars($course['title']) ?> 
+                            (<?= date('H:i', strtotime($course['start_time'])) ?> - 
+                             <?= date('H:i', strtotime($course['end_time'])) ?>)
                         </option>
                     <?php endforeach; ?>
                 </select>
             </div>
-            <button type="submit" class="btn btn-primary">📝 Mark Attendance</button>
+            <button type="submit" class="btn btn-primary">✅ Mark Attendance</button>
         </form>
+    <?php else: ?>
+        <div class="alert alert-info">ℹ️ No active courses at this time. Please check back later.</div>
     <?php endif; ?>
 </div>
 </body>

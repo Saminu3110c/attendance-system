@@ -21,8 +21,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     if (empty($errors)) {
+        $hashed_pw = password_hash($password, PASSWORD_DEFAULT);
         $stmt = mysqli_prepare($conn, "INSERT INTO students (student_id, name, department, level, email, password) VALUES (?, ?, ?, ?, ?, ?)");
-        mysqli_stmt_bind_param($stmt, "ssssss", $student_id, $name, $department, $level, $email, $password);
+        mysqli_stmt_bind_param($stmt, "ssssss", $student_id, $name, $department, $level, $email, $hashed_pw);
         if (mysqli_stmt_execute($stmt)) {
             header("Location: index.php?success=1");
             exit;

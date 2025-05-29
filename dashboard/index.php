@@ -38,7 +38,7 @@ $role = $_SESSION['user_role'];
                 <a href="../courses/" class="btn btn-info w-100 mb-3">Manage Courses</a>
             </div>
             <div class="col-md-4">
-                <a href="../reports/" class="btn btn-dark w-100 mb-3">View Attendance Report</a>
+                <a href="../reports/attendance_report.php" class="btn btn-dark w-100 mb-3">View Attendance Report</a>
             </div>
         </div>
     <?php elseif ($role === 'teacher'): ?>
