@@ -13,16 +13,29 @@ $student_id = $_SESSION['user_id'];
 $success = $error = '';
 
 // Get active courses (joined with course title)
-$now = date('Y-m-d H:i:s');
+// $now = date('Y-m-d H:i:s');
+
 $query = "
     SELECT ac.id AS activation_id, c.id AS course_id, c.title, ac.start_time, ac.end_time
     FROM course_activations ac
     JOIN courses c ON ac.course_id = c.id
-    WHERE ac.start_time <= '$now' AND ac.end_time >= '$now'
+    WHERE ac.start_time <= NOW() AND ac.end_time >= NOW()
 ";
 
 $result = mysqli_query($conn, $query);
 $active_courses = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+    // $query = "
+    //     SELECT ac.id AS activation_id, c.id AS course_id, c.title, ac.start_time, ac.end_time
+    //     FROM course_activations ac
+    //     JOIN courses c ON ac.course_id = c.id
+    //     WHERE ac.start_time <= ? AND ac.end_time >= ?
+    // ";
+    // $stmt = mysqli_prepare($conn, $query);
+    // mysqli_stmt_bind_param($stmt, "ss", $now, $now);
+    // mysqli_stmt_execute($stmt);
+    // $result = mysqli_stmt_get_result($stmt);
+    // $active_courses = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
 // Handle attendance marking
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['course_id'])) {
