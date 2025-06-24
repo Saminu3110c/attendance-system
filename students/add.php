@@ -32,6 +32,47 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 }
+
+if (isset($_POST['upload_csv'])) {
+    if (isset($_FILES['csv_file']) && $_FILES['csv_file']['error'] == UPLOAD_ERR_OK) {
+        $filename = $_FILES['csv_file']['tmp_name'];
+        $handle = fopen($filename, 'r');
+
+        // Skip header row
+        fgetcsv($handle);
+
+        $success_count = 0;
+        $fail_count = 0;
+        $fail_rows = [];
+
+        while (($data = fgetcsv($handle)) !== false) {
+            // Assuming CSV columns: student_id, name, department, level, email
+            list($student_id, $name, $department, $level, $email) = array_map('trim', $data);
+
+            // Insert into DB
+            $stmt = mysqli_prepare($conn, "INSERT INTO students (student_id, name, department, level, email, password) VALUES (?, ?, ?, ?, ?, NULL)");
+            mysqli_stmt_bind_param($stmt, "sssss", $student_id, $name, $department, $level, $email);
+            if (mysqli_stmt_execute($stmt)) {
+                $success_count++;
+            } else {
+                $fail_count++;
+                $fail_rows[] = $student_id;
+            }
+        }
+
+        fclose($handle);
+
+        if ($success_count) {
+            $errors[] = "✅ $success_count students uploaded successfully.";
+        }
+        if ($fail_count) {
+            $errors[] = "❌ $fail_count failed to upload: " . implode(', ', $fail_rows);
+        }
+    } else {
+        $errors[] = "⚠️ Failed to upload file.";
+    }
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -79,6 +120,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
         <button type="submit" class="btn btn-success">💾 Save</button>
     </form>
+    <hr class="my-5">
+    <h4>📁 Bulk Upload via CSV</h4>
+    <form method="POST" enctype="multipart/form-data">
+        <div class="mb-3">
+            <label for="csv_file" class="form-label">Choose CSV File</label>
+            <input type="file" name="csv_file" id="csv_file" class="form-control" accept=".csv" required>
+        </div>
+        <button type="submit" name="upload_csv" class="btn btn-primary">📤 Upload Students</button>
+    </form>
+
 </div>
 </body>
 </html>
