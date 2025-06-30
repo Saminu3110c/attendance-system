@@ -112,6 +112,9 @@ attendance-system/
 │   ├── delete.php
 │   └── assign.php
 │
+├── dashboard/
+│   └── index.php
+|
 ├── teacher_dashboard/
 │   ├── activate.php
 │   └── index.php
