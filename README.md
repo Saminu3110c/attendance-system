@@ -136,7 +136,7 @@ attendance-system/
 
 
 ### The Core Team
-- Engr. Dr. Monday MONDAY Abutu Idakwo 
+- Engr. Dr. Monday Abutu Idakwo 
 - Saminu Isah - isah_s
 
 
