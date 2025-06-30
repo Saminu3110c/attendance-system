@@ -52,9 +52,9 @@ This project solves the above problems by:
 2. Import the database
     - Import attendance_system.sql into your MySQL server via phpMyAdmin or CLI:
     ```bash
-    mysql -u root -p attendance_system < attendance_system.sql
+    mysql -u root -p attendance_system < DATABASE/attendance_system.sql
     ```
-3. Start XAMPP/LAMP server and navigate to:
+3. Start XAMPP server and navigate to:
     ```bash
     http://localhost/attendance-system
     ```
