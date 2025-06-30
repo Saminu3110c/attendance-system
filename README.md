@@ -83,6 +83,7 @@ This project solves the above problems by:
  - Can only mark attendance once per active course session
 
 📂 Project Structure
+```pgsql
 attendance-system/
 │
 ├── auth/
