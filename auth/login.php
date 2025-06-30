@@ -1,6 +1,52 @@
 <?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Student Login</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+<div class="container mt-5">
+    <h2 class="mb-4">🎓 Student Login</h2>
+    <?php if (isset($_SESSION['login_error'])): ?>
+        <div class="alert alert-danger"><?php echo $_SESSION['login_error']; unset($_SESSION['login_error']); ?></div>
+    <?php endif; ?>
+
+    <form action="login_process.php" method="POST">
+        <div class="form-group">
+            <label for="userRole" class="form-label">User Role</label>
+            <select required name="userRole" class="form-control mb-3">
+                <option value="">--Select User Roles--</option>
+                <option value="Administrator">Administrator</option>
+                <option value="CourseLecturer">CourseLecturer</option>
+                <option value="Student">Student</option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="email" class="form-label">Email Address</label>
+            <input type="email" class="form-control" name="email" required>
+        </div>
+        <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input type="password" class="form-control" name="password" required>
+        </div>
+        <button type="submit" class="btn btn-primary">🔓 Login</button>
+        <div class="mt-3">
+            <a href="forgot_password.php">🔑 Forgot your password?</a>
+        </div>
+    </form>
+</div>
+</body>
+</html>
+
+
+
+
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
     <head>
     <meta charset="UTF-8">
     <title>Login - Attendance System</title>
@@ -40,4 +86,4 @@
         </div>
 
     </body>
-</html>
+</html> -->
