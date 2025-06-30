@@ -42,7 +42,7 @@ This project solves the above problems by:
 - Generating **attendance reports with percentage per student per course**, exportable as CSV
 
 ## Installation
-1. Clone the repository
+1. Clone the repository in (C:\xampp\htdocs)
     ```bash
     git clone https://github.com/Saminu3110c/attendance-system.git
     ```
