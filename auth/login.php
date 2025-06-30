@@ -8,7 +8,7 @@
 </head>
 <body class="bg-light">
 <div class="container mt-5">
-    <h2 class="mb-4">🎓 Student Login</h2>
+    <h2 class="mb-4">🎓 Login</h2>
     <?php if (isset($_SESSION['login_error'])): ?>
         <div class="alert alert-danger"><?php echo $_SESSION['login_error']; unset($_SESSION['login_error']); ?></div>
     <?php endif; ?>
@@ -34,6 +34,7 @@
         <button type="submit" class="btn btn-primary">🔓 Login</button>
         <div class="mt-3">
             <a href="forgot_password.php">🔑 Forgot your password?</a>
+            <p>New Student? <a href="create_password.php">🔐 Create your password.</a></p>
         </div>
     </form>
 </div>
