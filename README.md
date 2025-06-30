@@ -2,10 +2,10 @@
 ***
 A web-based student attendance management system built with PHP (MySQLi procedural), HTML, and Bootstrap 5, featuring:
 
-✅ Admin management of students, teachers, and courses
-✅ Teacher-controlled course activation
-✅ Student fingerprint (WebAuthn to be implemented) and password-based attendance marking
-✅ Attendance reporting with CSV export
+- ✅ Admin management of students, teachers, and courses
+- ✅ Teacher-controlled course activation
+- ✅ Student fingerprint (WebAuthn to be implemented) and password-based attendance marking
+- ✅ Attendance reporting with CSV export
 
 ## Task
 Problem:
