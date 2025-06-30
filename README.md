@@ -126,6 +126,8 @@ attendance-system/
 │
 └── README.md
 
+```
+
 
 ### The Core Team
 
