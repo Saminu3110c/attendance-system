@@ -63,24 +63,24 @@ This project solves the above problems by:
 🔑 Admin
 1. **Login as admin**
 2. **Manage students, teachers, course**
- - Add, edit, delete records
- - Assign courses to teachers
+   - Add, edit, delete records
+   - Assign courses to teachers
 3. **View attendance reports**
- - Filter by student or course
- - Export report as CSV
+   - Filter by student or course
+   - Export report as CSV
 
 👨‍🏫 Teacher
 1. **Login as teacher**
 2. **Activate assigned courses**
- - Define start and end time
- - Only active within the specified window
+   - Define start and end time
+   - Only active within the specified window
 
 👨‍🎓 Student
 1. Register fingerprint(to be implemented) or password
- - If registered via CSV bulk upload, create password via create_password.php
+    - If registered via CSV bulk upload, create password via create_password.php
 2. **Login as student**
 3. **Mark attendance**
- - Can only mark attendance once per active course session
+    - Can only mark attendance once per active course session
 
 📂 Project Structure
 ```pgsql
@@ -124,13 +124,21 @@ attendance-system/
 ├── includes/
 │   └── db.php
 │
+├── DATABASE/
+│   └── attendance_system.sql
+|
+├── index.php
+├── DB_DESIGN.txt
+├── registerAdmin.php
 └── README.md
 
 ```
 
 
 ### The Core Team
+- Engr. Dr. Monday MONDAY Abutu Idakwo 
+- Saminu Isah - isah_s
 
 
-<span><i>Made at Federal University Lokoja</i></span>
+<span><i>Made at Federal University Lokoja (FUL)</i></span>
 <span><img alt='Schools Logo' src='' width='20px' /></span>
